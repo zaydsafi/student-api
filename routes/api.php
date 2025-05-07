@@ -3,15 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UserController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::POST('/register', [UserController::class, 'register'])->name('register');
 
-Route::middleware('api')->group(function () {
-    Route::get('/students', [\App\Http\Controllers\StudentController::class, 'index']);
-    Route::post('/students', [\App\Http\Controllers\StudentController::class, 'store']);
-    Route::get('/students/{id}', [\App\Http\Controllers\StudentController::class, 'show']);
-    Route::put('/students/{id}', [\App\Http\Controllers\StudentController::class, 'update']);
-    Route::delete('/students/{id}', [\App\Http\Controllers\StudentController::class, 'destroy']);
+Route::POST('/login', [UserController::class, 'login'])->name('login');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/students', StudentController::class);
+    Route::apiResource('/user', UserController::class);
+    Route::get('/students/search/{city}', [StudentController::class, 'search'])->name('search');
+    Route::POST('/logout', [UserController::class, 'logout'])->name('logout');
 });

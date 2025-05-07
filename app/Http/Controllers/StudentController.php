@@ -61,6 +61,9 @@ class StudentController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $student = Student::find($id);
+        $student->update($request->all());
+        return $student;
     }
 
     /**
@@ -69,5 +72,14 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         //
+        $student = Student::findOrFail($id);
+        $student->delete();
+        return $student;
+    }
+
+    public function search($city)
+    {
+        $student = Student::where('city', $city)->get();
+        return $student;
     }
 }
